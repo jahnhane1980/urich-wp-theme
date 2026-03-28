@@ -10,7 +10,16 @@
 
 <nav>
     <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-container">
-        <img src="<?php echo get_template_directory_uri(); ?>/img/logo.png" alt="<?php bloginfo('name'); ?>" class="logo-img">
+        <?php 
+        // Prüfen, ob ein Custom Logo gesetzt wurde, sonst Fallback auf Standard-Bild
+        if ( has_custom_logo() ) {
+            $custom_logo_id = get_theme_mod( 'custom-logo' );
+            $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+            echo '<img src="' . esc_url( $logo[0] ) . '" alt="' . get_bloginfo( 'name' ) . '" class="logo-img">';
+        } else {
+            echo '<img src="' . get_template_directory_uri() . '/img/logo.png" alt="' . get_bloginfo('name') . '" class="logo-img">';
+        }
+        ?>
     </a>
     
     <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-haspopup="true" aria-expanded="false">

@@ -16,14 +16,23 @@ add_action('wp_enqueue_scripts', 'urich_theme_scripts');
 // Support für automatische Title-Tags (SEO-Best-Practice)
 add_theme_support('title-tag');
 
-// Support für Beitragsbilder (falls später für Blog/News benötigt)
+// Support für Beitragsbilder
 add_theme_support('post-thumbnails');
+
+// NEU: Support für Custom Logo über den Customizer
+add_theme_support('custom-logo', array(
+    'height'      => 65,
+    'width'       => 250,
+    'flex-height' => true,
+    'flex-width'  => true,
+    'header-text' => array('site-title', 'site-description'),
+));
 
 // Menü-Positionen registrieren
 function urich_register_menus() {
     register_nav_menus(array(
         'primary' => __('Hauptmenü', 'urich-theme'),
-        'footer'  => __('Footer-Menü', 'urich-theme'), // Neu hinzugefügt
+        'footer'  => __('Footer-Menü', 'urich-theme'),
     ));
 }
 add_action('init', 'urich_register_menus');
