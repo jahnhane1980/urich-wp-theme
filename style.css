@@ -1,0 +1,15 @@
+/*
+Theme Name: Andreas Urich Osteopathie
+Theme URI: https://osteopathie-urich.de
+Author: Andreas Urich / Code-Buddy
+Description: Ein maßgeschneidertes, responsives Theme für die Osteopathie-Praxis Urich.
+Version: 1.0
+License: GNU General Public License v3 or later
+License URI: http://www.gnu.org/licenses/gpl-3.0.html
+Text Domain: urich-theme
+*/
+
+/* Hinweis für Clean Code: 
+Der eigentliche Design-Code befindet sich modular getrennt in css/style-theme.css 
+und wird sauber über die functions.php geladen. 
+*/
