@@ -3,12 +3,12 @@
 <main>
     <section class="hero">
         <div class="hero-content">
-            <h1>Bewegung ist <span>Leben</span>.</h1>
-            <p>Erleben Sie eine Therapie, die nicht nur Symptome behandelt, sondern die Ursachen Ihrer Beschwerden tiefgreifend versteht.</p>
-            <a href="https://www.appointmed.com/" class="btn-submit" target="_blank">Termin vereinbaren</a>
+            <h1><?php echo get_theme_mod('urich_hero_title', 'Bewegung ist <span>Leben</span>.'); ?></h1>
+            <p><?php echo get_theme_mod('urich_hero_text', 'Erleben Sie eine Therapie, die nicht nur Symptome behandelt, sondern die Ursachen Ihrer Beschwerden tiefgreifend versteht.'); ?></p>
+            <a href="<?php echo esc_url(get_theme_mod('urich_hero_btn_link', 'https://www.appointmed.com/')); ?>" class="btn-submit" target="_blank">Termin vereinbaren</a>
         </div>
         <div class="hero-image">
-            <img src="<?php echo get_template_directory_uri(); ?>/img/praxis-urich.jpg" alt="Andreas Urich Osteopathie" class="img-hero-style">
+            <img src="<?php echo get_template_directory_uri(); ?>/img/praxis-urich.jpg" alt="<?php bloginfo('name'); ?>" class="img-hero-style">
         </div>
     </section>
 
@@ -43,10 +43,7 @@
         <div class="contact-container">
             <h2>Persönliche Anfrage</h2>
             <?php 
-            /* Platzhalter für Plugin (z.B. Contact Form 7). 
-               Im fertigen Theme würde hier stehen: 
-               echo do_shortcode('[contact-form-7 id="123" title="Kontakt"]'); 
-            */
+            /* Hier wird später der Shortcode deines Formular-Plugins eingefügt */
             ?>
             <p style="text-align:center; opacity:0.7;">[Hier wird das Kontakt-Formular-Plugin eingebunden]</p>
         </div>
