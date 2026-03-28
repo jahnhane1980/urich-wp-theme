@@ -11,11 +11,15 @@
 <nav>
     <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-container">
         <?php 
-        // Prüfen, ob ein Custom Logo gesetzt wurde, sonst Fallback auf Standard-Bild
         if ( has_custom_logo() ) {
             $custom_logo_id = get_theme_mod( 'custom-logo' );
-            $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
-            echo '<img src="' . esc_url( $logo[0] ) . '" alt="' . get_bloginfo( 'name' ) . '" class="logo-img">';
+            $logo_data = wp_get_attachment_image_src( $custom_logo_id , 'full' );
+            
+            if ( $logo_data ) {
+                echo '<img src="' . esc_url( $logo_data[0] ) . '" alt="' . get_bloginfo( 'name' ) . '" class="logo-img">';
+            } else {
+                echo '<img src="' . get_template_directory_uri() . '/img/logo.png" alt="' . get_bloginfo('name') . '" class="logo-img">';
+            }
         } else {
             echo '<img src="' . get_template_directory_uri() . '/img/logo.png" alt="' . get_bloginfo('name') . '" class="logo-img">';
         }
@@ -30,7 +34,6 @@
     </label>
     
     <?php 
-    // Dynamisches Hauptmenü aus WordPress
     wp_nav_menu( array(
         'theme_location' => 'primary',
         'menu_class'     => 'nav-links',

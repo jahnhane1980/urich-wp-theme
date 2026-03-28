@@ -23,7 +23,6 @@
         <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?></p>
         <div class="footer-nav">
             <?php 
-            // Dynamisches Footer-Menü für Impressum & Datenschutz
             wp_nav_menu( array(
                 'theme_location' => 'footer',
                 'container'      => false,
