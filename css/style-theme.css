@@ -258,6 +258,26 @@ footer {
     display: flex; 
     justify-content: space-between; 
     flex-wrap: wrap; 
+    gap: 2rem;
+}
+
+/* Korrektur für Widget-Abstände (Schritt 3) */
+.widget {
+    margin-bottom: 0;
+}
+
+.widget h4.footer-title {
+    margin-bottom: 1rem;
+}
+
+.widget p {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+/* Entfernt Standard-Block-Abstände im Footer */
+footer .footer-grid > * + * {
+    margin-top: 0;
 }
 
 .footer-bottom { 
@@ -284,11 +304,6 @@ footer {
 
 .footer-links-container a:hover {
     color: var(--color-accent);
-}
-
-.footer-link-reset { 
-    color: inherit; 
-    text-decoration: none; 
 }
 
 /* RESPONSIVE */
