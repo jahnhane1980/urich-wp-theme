@@ -14,7 +14,7 @@
         <?php else : ?>
             <div>
                 <h4 class="footer-title">Kontakt</h4>
-                <p>E-Mail: info@osteopathie-urich.de<br>Tel: 0123 / 456 789</p>
+                <p>E-Mail: <?php echo antispambot('info@osteopathie-urich.de'); ?><br>Tel: 0123 / 456 789</p>
             </div>
         <?php endif; ?>
     </div>

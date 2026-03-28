@@ -4,15 +4,11 @@
  */
 
 function urich_theme_scripts() {
-    // Haupt-Stylesheet laden (style.css)
     wp_enqueue_style('urich-main-style', get_stylesheet_uri());
-    
-    // Die Design-Datei aus dem CSS-Ordner laden
     wp_enqueue_style('urich-theme-design', get_template_directory_uri() . '/css/style-theme.css', array(), '1.0');
 }
 add_action('wp_enqueue_scripts', 'urich_theme_scripts');
 
-// Theme Support
 add_theme_support('title-tag');
 add_theme_support('post-thumbnails');
 add_theme_support('custom-logo', array(
@@ -22,7 +18,6 @@ add_theme_support('custom-logo', array(
     'flex-width'  => true,
 ));
 
-// Menü-Positionen registrieren
 function urich_register_menus() {
     register_nav_menus(array(
         'primary' => __('Hauptmenü', 'urich-theme'),
@@ -31,7 +26,6 @@ function urich_register_menus() {
 }
 add_action('init', 'urich_register_menus');
 
-// Widget-Bereiche registrieren
 function urich_widgets_init() {
     register_sidebar( array(
         'name'          => __( 'Footer Links', 'urich-theme' ),
@@ -52,15 +46,20 @@ function urich_widgets_init() {
 }
 add_action( 'widgets_init', 'urich_widgets_init' );
 
-// Customizer Einstellungen für die Startseite
+// NEU: Shortcode [email] für bombensichere Verschlüsselung
+function urich_antispam_email_shortcode() {
+    $email = 'info@osteopathie-urich.de'; 
+    $encoded = antispambot($email);
+    return '<a href="mailto:' . $encoded . '">' . $encoded . '</a>';
+}
+add_shortcode('email', 'urich_antispam_email_shortcode');
+
 function urich_customize_register( $wp_customize ) {
-    // Sektion Startseite
     $wp_customize->add_section( 'urich_hero_section' , array(
         'title'      => __( 'Startseite Hero', 'urich-theme' ),
         'priority'   => 30,
     ) );
 
-    // Hero Überschrift
     $wp_customize->add_setting( 'urich_hero_title' , array(
         'default'   => 'Bewegung ist <span>Leben</span>.',
         'transport' => 'refresh',
@@ -72,7 +71,6 @@ function urich_customize_register( $wp_customize ) {
         'type'     => 'textarea',
     ) );
 
-    // Hero Text
     $wp_customize->add_setting( 'urich_hero_text' , array(
         'default'   => 'Erleben Sie eine Therapie, die nicht nur Symptome behandelt, sondern die Ursachen Ihrer Beschwerden tiefgreifend versteht.',
         'transport' => 'refresh',
@@ -84,7 +82,6 @@ function urich_customize_register( $wp_customize ) {
         'type'     => 'textarea',
     ) );
 
-    // Hero Button Link
     $wp_customize->add_setting( 'urich_hero_btn_link' , array(
         'default'   => 'https://www.appointmed.com/booking/2393840-andreas-urich-osteopathie-und-private-physiotherapie',
         'transport' => 'refresh',
