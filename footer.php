@@ -1,26 +1,38 @@
 <footer>
     <div class="footer-grid">
-        <div>
-            <h4 class="footer-title">Andreas Urich</h4>
-            <p>Praxis für Osteopathie<br>Industriestraße 9<br>97241 Bergtheim</p>
-        </div>
-        <div>
-            <h4 class="footer-title">Kontakt</h4>
-            <p>E-Mail: info@osteopathie-urich.de<br>Tel: 0123 / 456 789</p>
-        </div>
+        <?php if ( is_active_sidebar( 'footer-1' ) ) : ?>
+            <?php dynamic_sidebar( 'footer-1' ); ?>
+        <?php else : ?>
+            <div>
+                <h4 class="footer-title">Andreas Urich</h4>
+                <p>Praxis für Osteopathie<br>Industriestraße 9<br>97241 Bergtheim</p>
+            </div>
+        <?php endif; ?>
+
+        <?php if ( is_active_sidebar( 'footer-2' ) ) : ?>
+            <?php dynamic_sidebar( 'footer-2' ); ?>
+        <?php else : ?>
+            <div>
+                <h4 class="footer-title">Kontakt</h4>
+                <p>E-Mail: info@osteopathie-urich.de<br>Tel: 0123 / 456 789</p>
+            </div>
+        <?php endif; ?>
     </div>
+    
     <div class="footer-bottom">
         <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?></p>
-        <?php 
-        // Dynamisches Footer-Menü
-        wp_nav_menu( array(
-            'theme_location' => 'footer',
-            'container'      => false,
-            'menu_class'     => 'footer-links-container',
-            'fallback_cb'    => false,
-            'depth'          => 1,
-        ) );
-        ?>
+        <div class="footer-nav">
+            <?php 
+            // Dynamisches Footer-Menü für Impressum & Datenschutz
+            wp_nav_menu( array(
+                'theme_location' => 'footer',
+                'container'      => false,
+                'menu_class'     => 'footer-links-container',
+                'fallback_cb'    => false,
+                'depth'          => 1,
+            ) );
+            ?>
+        </div>
     </div>
 </footer>
 

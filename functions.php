@@ -19,13 +19,12 @@ add_theme_support('title-tag');
 // Support für Beitragsbilder
 add_theme_support('post-thumbnails');
 
-// NEU: Support für Custom Logo über den Customizer
+// Support für Custom Logo über den Customizer
 add_theme_support('custom-logo', array(
     'height'      => 65,
     'width'       => 250,
     'flex-height' => true,
     'flex-width'  => true,
-    'header-text' => array('site-title', 'site-description'),
 ));
 
 // Menü-Positionen registrieren
@@ -36,3 +35,27 @@ function urich_register_menus() {
     ));
 }
 add_action('init', 'urich_register_menus');
+
+// NEU: Widget-Bereiche registrieren
+function urich_widgets_init() {
+    register_sidebar( array(
+        'name'          => __( 'Footer Links', 'urich-theme' ),
+        'id'            => 'footer-1',
+        'description'   => __( 'Linke Spalte im Footer (z.B. Adresse).', 'urich-theme' ),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="footer-title">',
+        'after_title'   => '</h4>',
+    ) );
+
+    register_sidebar( array(
+        'name'          => __( 'Footer Rechts', 'urich-theme' ),
+        'id'            => 'footer-2',
+        'description'   => __( 'Rechte Spalte im Footer (z.B. Telefon/E-Mail).', 'urich-theme' ),
+        'before_widget' => '<div id="%1$s" class="widget %2$s">',
+        'after_widget'  => '</div>',
+        'before_title'  => '<h4 class="footer-title">',
+        'after_title'   => '</h4>',
+    ) );
+}
+add_action( 'widgets_init', 'urich_widgets_init' );
