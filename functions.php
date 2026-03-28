@@ -80,7 +80,7 @@ function urich_customize_register( $wp_customize ) {
 
     // Hero Button Link
     $wp_customize->add_setting( 'urich_hero_btn_link' , array(
-        'default'   => 'https://www.appointmed.com/',
+        'default'   => 'https://www.appointmed.com/booking/2393840-andreas-urich-osteopathie-und-private-physiotherapie',
         'transport' => 'refresh',
     ) );
     $wp_customize->add_control( 'urich_hero_btn_link_control', array(
