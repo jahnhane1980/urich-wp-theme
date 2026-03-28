@@ -11,18 +11,16 @@
     </div>
     <div class="footer-bottom">
         <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?></p>
-        <div class="footer-nav">
-            <?php 
-            // Dynamisches Footer-Menü für Impressum & Datenschutz
-            wp_nav_menu( array(
-                'theme_location' => 'footer',
-                'container'      => false,
-                'menu_class'     => 'footer-links-container',
-                'fallback_cb'    => false,
-                'depth'          => 1,
-            ) );
-            ?>
-        </div>
+        <?php 
+        // Dynamisches Footer-Menü
+        wp_nav_menu( array(
+            'theme_location' => 'footer',
+            'container'      => false,
+            'menu_class'     => 'footer-links-container',
+            'fallback_cb'    => false,
+            'depth'          => 1,
+        ) );
+        ?>
     </div>
 </footer>
 
