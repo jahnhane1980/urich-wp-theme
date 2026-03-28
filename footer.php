@@ -11,10 +11,18 @@
     </div>
     <div class="footer-bottom">
         <p>&copy; <?php echo date('Y'); ?> <?php bloginfo('name'); ?></p>
-        <p>
-            <a href="#impressum" class="footer-link-reset">Impressum</a> | 
-            <a href="#datenschutz" class="footer-link-reset">Datenschutz</a>                
-        </p>
+        <div class="footer-nav">
+            <?php 
+            // Dynamisches Footer-Menü für Impressum & Datenschutz
+            wp_nav_menu( array(
+                'theme_location' => 'footer',
+                'container'      => false,
+                'menu_class'     => 'footer-links-container',
+                'fallback_cb'    => false,
+                'depth'          => 1,
+            ) );
+            ?>
+        </div>
     </div>
 </footer>
 
@@ -22,15 +30,17 @@
     const navToggle = document.getElementById('nav-toggle');
     const navToggleLabel = document.querySelector('.nav-toggle-label');
 
-    navToggle.addEventListener('change', function() {
-        if (this.checked) {
-            navToggle.setAttribute('aria-expanded', 'true');
-            navToggleLabel.setAttribute('aria-label', 'Menü schließen');
-        } else {
-            navToggle.setAttribute('aria-expanded', 'false');
-            navToggleLabel.setAttribute('aria-label', 'Menü öffnen');
-        }
-    });
+    if (navToggle) {
+        navToggle.addEventListener('change', function() {
+            if (this.checked) {
+                navToggle.setAttribute('aria-expanded', 'true');
+                navToggleLabel.setAttribute('aria-label', 'Menü schließen');
+            } else {
+                navToggle.setAttribute('aria-expanded', 'false');
+                navToggleLabel.setAttribute('aria-label', 'Menü öffnen');
+            }
+        });
+    }
 </script>
 
 <?php wp_footer(); ?>

@@ -23,6 +23,7 @@ add_theme_support('post-thumbnails');
 function urich_register_menus() {
     register_nav_menus(array(
         'primary' => __('Hauptmenü', 'urich-theme'),
+        'footer'  => __('Footer-Menü', 'urich-theme'), // Neu: Footer Menü registriert
     ));
 }
 add_action('init', 'urich_register_menus');
