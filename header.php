@@ -21,13 +21,12 @@
     </label>
     
     <?php 
-    // Später ersetzen wir das durch wp_nav_menu()
+    // Dynamisches Hauptmenü aus WordPress
+    wp_nav_menu( array(
+        'theme_location' => 'primary',
+        'menu_class'     => 'nav-links',
+        'container'      => false,
+        'fallback_cb'    => false,
+    ) );
     ?>
-    <ul class="nav-links">
-        <li><a href="#ueber-mich">Über Mich</a></li>
-        <li><a href="#angebote">Angebote</a></li>
-        <li><a href="#informationen">Informationen</a></li>
-        <li><a href="#kosten">Kosten</a></li>
-        <li><a href="#kontakt">Kontakt</a></li>
-    </ul>
 </nav>
