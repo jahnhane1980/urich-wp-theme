@@ -14,6 +14,13 @@
         <img src="img/logo.png" alt="Andreas Urich Osteopathie" class="logo-img">
     </a>
     
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-haspopup="true" aria-expanded="false">
+    <label for="nav-toggle" class="nav-toggle-label" aria-label="Menü öffnen" role="button">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+    </label>
+    
     <ul class="nav-links">
         <li><a href="cnt/ueber_mich.html">Über Mich</a></li>
         <li><a href="cnt/angebote.html">Angebote</a></li>
@@ -28,7 +35,7 @@
         <div class="hero-content">
             <h1>Bewegung ist <span>Leben</span>.</h1>
             <p>Erleben Sie eine Therapie, die nicht nur Symptome behandelt, sondern die Ursachen Ihrer Beschwerden tiefgreifend versteht.</p>
-            <a href="https://www.appointmed.com/" class="btn-submit" style="text-decoration:none; display:inline-block; text-align:center;" target="_blank">Termin vereinbaren</a>
+            <a href="https://www.appointmed.com/" class="btn-submit" target="_blank">Termin vereinbaren</a>
         </div>
         <div class="hero-image">
             <img src="img/praxis-urich.jpg" alt="Andreas Urich Osteopathie" class="img-hero-style">
@@ -39,16 +46,25 @@
         <h2>Spezialisierungen</h2>
         <div class="grid">
             <div class="card">
-                <h3>Strukturell</h3>
-                <p>Präzise Arbeit an Wirbelsäule und Gelenken zur Wiederherstellung Ihrer Mobilität.</p>
+                <img src="img/parietale-osteopathie.png" alt="Strukturelle Osteopathie" class="card-img" loading="lazy">
+                <div class="card-content">
+                    <h3>Strukturell</h3>
+                    <p>Präzise Arbeit an Wirbelsäule und Gelenken zur Wiederherstellung Ihrer Mobilität.</p>
+                </div>
             </div>
             <div class="card">
-                <h3>Organisch</h3>
-                <p>Viszeral-therapeutische Ansätze zur Unterstützung der inneren Vitalfunktionen.</p>
+                <img src="img/viszerale-osteopathie.png" alt="Organische Osteopathie" class="card-img" loading="lazy">
+                <div class="card-content">
+                    <h3>Organisch</h3>
+                    <p>Viszeral-therapeutische Ansätze zur Unterstützung der inneren Vitalfunktionen.</p>
+                </div>
             </div>
             <div class="card">
-                <h3>Neurologisch</h3>
-                <p>Sanfte Techniken zur Entspannung des Nervensystems und Regulation von Stress.</p>
+                <img src="img/kraniosakrale-osteopathie.png" alt="Neurologische Osteopathie" class="card-img" loading="lazy">
+                <div class="card-content">
+                    <h3>Neurologisch</h3>
+                    <p>Sanfte Techniken zur Entspannung des Nervensystems und Regulation von Stress.</p>
+                </div>
             </div>
         </div>
     </section>
@@ -94,6 +110,22 @@
         </p>
     </div>
 </footer>
+
+<script>
+    // JavaScript für Mobile-Navigation (Schritt 2, Optimiert für ARIA)
+    const navToggle = document.getElementById('nav-toggle');
+    const navToggleLabel = document.querySelector('.nav-toggle-label');
+
+    navToggle.addEventListener('change', function() {
+        if (this.checked) {
+            navToggle.setAttribute('aria-expanded', 'true');
+            navToggleLabel.setAttribute('aria-label', 'Menü schließen');
+        } else {
+            navToggle.setAttribute('aria-expanded', 'false');
+            navToggleLabel.setAttribute('aria-label', 'Menü öffnen');
+        }
+    });
+</script>
 
 </body>
 </html>
