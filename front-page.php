@@ -42,7 +42,7 @@
     <section id="kontakt" class="contact">
         <div class="contact-container">
             <h2>Persönliche Anfrage</h2>
-            <p style="text-align:center; opacity:0.7;">[Hier wird das Kontakt-Formular-Plugin eingebunden]</p>
+            <?php echo do_shortcode('[contact-form-7 id="3bad2bd" title="Kontaktformular 1"]'); ?>
         </div>
     </section>
 </main>

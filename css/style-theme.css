@@ -207,27 +207,45 @@ nav {
     margin: 0 auto; 
 }
 
-.form-group { 
-    margin-bottom: 2rem; 
-    display: flex; 
-    flex-direction: column; 
+.contact h2 {
+    text-align: center;
+    margin-bottom: 3rem;
 }
 
-.form-group label {
-    margin-bottom: 0.5rem;
-    font-weight: 600;
+/* CF7 Spezifische Anpassungen */
+.wpcf7-form {
+    display: flex;
+    flex-direction: column;
 }
 
-.form-group input, 
-.form-group textarea {
+.wpcf7-form-control-wrap {
+    display: block;
+    margin-bottom: 1.5rem;
+}
+
+.wpcf7-text, 
+.wpcf7-textarea,
+.wpcf7-email {
     width: 100%; 
     padding: 1.2rem; 
     background: rgba(255,255,255,0.05); 
     border: 1px solid rgba(255,255,255,0.1); 
     color: white; 
+    font-family: inherit;
+    font-size: 1rem;
+    transition: var(--transition-standard);
 }
 
-.btn-submit {
+.wpcf7-text:focus, 
+.wpcf7-textarea:focus,
+.wpcf7-email:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    background: rgba(255,255,255,0.1);
+}
+
+/* Der Sende-Button */
+.wpcf7-submit {
     display: inline-block; 
     padding: 1.2rem 3rem; 
     background: var(--color-accent);
@@ -238,13 +256,26 @@ nav {
     text-transform: uppercase; 
     cursor: pointer; 
     transition: var(--transition-standard);
-    text-decoration: none; 
-    text-align: center;    
+    margin-top: 1rem;
 }
 
-.btn-submit:hover { 
+.wpcf7-submit:hover { 
     background: transparent; 
     color: var(--color-accent); 
+}
+
+/* Fehlermeldungen Styling */
+.wpcf7-not-valid-tip {
+    color: #ff4d4d;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+}
+
+.wpcf7-response-output {
+    margin: 2rem 0 0 0 !important;
+    padding: 1rem !important;
+    border: 2px solid var(--color-accent) !important;
+    text-align: center;
 }
 
 /* FOOTER */
@@ -258,26 +289,6 @@ footer {
     display: flex; 
     justify-content: space-between; 
     flex-wrap: wrap; 
-    gap: 2rem;
-}
-
-/* Korrektur für Widget-Abstände (Schritt 3) */
-.widget {
-    margin-bottom: 0;
-}
-
-.widget h4.footer-title {
-    margin-bottom: 1rem;
-}
-
-.widget p {
-    margin-bottom: 0.5rem;
-    line-height: 1.5;
-}
-
-/* Entfernt Standard-Block-Abstände im Footer */
-footer .footer-grid > * + * {
-    margin-top: 0;
 }
 
 .footer-bottom { 
