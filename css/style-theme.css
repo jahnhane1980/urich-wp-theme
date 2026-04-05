@@ -4,7 +4,7 @@
     --color-primary: #252859;
     --color-secondary: #312f7a;
     --color-accent: #e67e22;
-    --color-bg-main: #e1e2fa;
+    --color-bg-main: #e1e2fa; 
     --color-bg-surface: #ffffff;
     --color-text-base: #2c2c2c;
     --color-text-inverse: #ffffff;
@@ -195,7 +195,7 @@ nav {
     font-size: 1.1rem; 
 }
 
-/* KONTAKTFORMULAR - Rekonstruktion für Contact Form 7 */
+/* KONTAKTFORMULAR */
 .contact { 
     padding: 8rem 7%; 
     background: var(--color-secondary); 
@@ -212,7 +212,6 @@ nav {
     margin-bottom: 3rem;
 }
 
-/* CF7 Formular-Struktur (Ersetzt .form-group) */
 .wpcf7-form p {
     margin-bottom: 2rem;
     display: flex;
@@ -220,11 +219,14 @@ nav {
 }
 
 .wpcf7-form label {
-    margin-bottom: 0.5rem;
+    display: block;
+    margin-bottom: 0.8rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    opacity: 0.7;
     font-weight: 600;
 }
 
-/* Input & Textarea Styling */
 .wpcf7-form input[type="text"],
 .wpcf7-form input[type="email"],
 .wpcf7-form textarea {
@@ -242,11 +244,11 @@ nav {
 .wpcf7-form textarea:focus {
     outline: none;
     border-color: var(--color-accent);
-    background: rgba(255,255,255,0.1);
 }
 
-/* Der Sende-Button */
-.wpcf7-submit {
+/* GEMEINSAME BUTTON STYLES (Hero-Link & Senden-Button) */
+.wpcf7-submit, 
+.btn-submit {
     display: inline-block; 
     padding: 1.2rem 3rem; 
     background: var(--color-accent);
@@ -257,37 +259,18 @@ nav {
     text-transform: uppercase; 
     cursor: pointer; 
     transition: var(--transition-standard);
-    margin-top: 1rem;
+    text-decoration: none;
+    text-align: center;
+    box-sizing: border-box;
 }
 
-.wpcf7-submit:hover { 
+.wpcf7-submit:hover, 
+.btn-submit:hover { 
     background: transparent; 
     color: var(--color-accent); 
 }
 
-/* Validierung & Fehlermeldungen Styling */
-.wpcf7-not-valid-tip {
-    color: #ff4d4d;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    font-weight: normal;
-}
-
-.wpcf7-response-output {
-    margin: 2rem 0 0 0 !important;
-    padding: 1rem !important;
-    border: 2px solid var(--color-accent) !important;
-    text-align: center;
-    border-radius: 4px;
-}
-
-/* Spinner verstecken oder dezent stylen */
-.wpcf7-spinner {
-    position: absolute;
-    margin-left: 10px;
-}
-
-/* FOOTER */
+/* FOOTER & WIDGET FIXES */
 footer { 
     padding: 5rem 7% 3rem; 
     background: var(--color-primary); 
@@ -298,6 +281,24 @@ footer {
     display: flex; 
     justify-content: space-between; 
     flex-wrap: wrap; 
+    gap: 2rem;
+}
+
+.widget {
+    margin-bottom: 0;
+}
+
+.widget h4.footer-title {
+    margin-bottom: 1rem;
+}
+
+.widget p {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+footer .footer-grid > * + * {
+    margin-top: 0;
 }
 
 .footer-bottom { 
