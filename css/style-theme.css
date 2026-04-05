@@ -195,7 +195,7 @@ nav {
     font-size: 1.1rem; 
 }
 
-/* KONTAKTFORMULAR */
+/* KONTAKTFORMULAR - Rekonstruktion für Contact Form 7 */
 .contact { 
     padding: 8rem 7%; 
     background: var(--color-secondary); 
@@ -212,20 +212,22 @@ nav {
     margin-bottom: 3rem;
 }
 
-/* CF7 Spezifische Anpassungen */
-.wpcf7-form {
+/* CF7 Formular-Struktur (Ersetzt .form-group) */
+.wpcf7-form p {
+    margin-bottom: 2rem;
     display: flex;
     flex-direction: column;
 }
 
-.wpcf7-form-control-wrap {
-    display: block;
-    margin-bottom: 1.5rem;
+.wpcf7-form label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
 }
 
-.wpcf7-text, 
-.wpcf7-textarea,
-.wpcf7-email {
+/* Input & Textarea Styling */
+.wpcf7-form input[type="text"],
+.wpcf7-form input[type="email"],
+.wpcf7-form textarea {
     width: 100%; 
     padding: 1.2rem; 
     background: rgba(255,255,255,0.05); 
@@ -236,9 +238,8 @@ nav {
     transition: var(--transition-standard);
 }
 
-.wpcf7-text:focus, 
-.wpcf7-textarea:focus,
-.wpcf7-email:focus {
+.wpcf7-form input:focus,
+.wpcf7-form textarea:focus {
     outline: none;
     border-color: var(--color-accent);
     background: rgba(255,255,255,0.1);
@@ -264,11 +265,12 @@ nav {
     color: var(--color-accent); 
 }
 
-/* Fehlermeldungen Styling */
+/* Validierung & Fehlermeldungen Styling */
 .wpcf7-not-valid-tip {
     color: #ff4d4d;
     font-size: 0.85rem;
     margin-top: 0.5rem;
+    font-weight: normal;
 }
 
 .wpcf7-response-output {
@@ -276,6 +278,13 @@ nav {
     padding: 1rem !important;
     border: 2px solid var(--color-accent) !important;
     text-align: center;
+    border-radius: 4px;
+}
+
+/* Spinner verstecken oder dezent stylen */
+.wpcf7-spinner {
+    position: absolute;
+    margin-left: 10px;
 }
 
 /* FOOTER */
