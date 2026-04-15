@@ -4,13 +4,17 @@
  */
 
 function urich_theme_scripts() {
+    // Haupt-Stylesheet laden (style.css)
     wp_enqueue_style('urich-main-style', get_stylesheet_uri());
+    
+    // Die Design-Datei aus dem CSS-Ordner laden
     wp_enqueue_style('urich-theme-design', get_template_directory_uri() . '/css/style-theme.css', array(), '1.0');
 }
 add_action('wp_enqueue_scripts', 'urich_theme_scripts');
 
+// Theme Support
 add_theme_support('title-tag');
-add_theme_support('post-thumbnails');
+add_theme_support('post-thumbnails'); // Wichtig für die Bilder der Leistungen
 add_theme_support('custom-logo', array(
     'height'      => 65,
     'width'       => 250,
@@ -18,6 +22,7 @@ add_theme_support('custom-logo', array(
     'flex-width'  => true,
 ));
 
+// Menü-Positionen registrieren
 function urich_register_menus() {
     register_nav_menus(array(
         'primary' => __('Hauptmenü', 'urich-theme'),
@@ -26,6 +31,7 @@ function urich_register_menus() {
 }
 add_action('init', 'urich_register_menus');
 
+// Widget-Bereiche registrieren
 function urich_widgets_init() {
     register_sidebar( array(
         'name'          => __( 'Footer Links', 'urich-theme' ),
@@ -46,7 +52,7 @@ function urich_widgets_init() {
 }
 add_action( 'widgets_init', 'urich_widgets_init' );
 
-// NEU: Shortcode [email] für bombensichere Verschlüsselung
+// Shortcode für verschlüsselte E-Mail
 function urich_antispam_email_shortcode() {
     $email = 'info@osteopathie-urich.de'; 
     $encoded = antispambot($email);
@@ -54,6 +60,7 @@ function urich_antispam_email_shortcode() {
 }
 add_shortcode('email', 'urich_antispam_email_shortcode');
 
+// Customizer Einstellungen für die Startseite (Hero)
 function urich_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'urich_hero_section' , array(
         'title'      => __( 'Startseite Hero', 'urich-theme' ),
@@ -94,3 +101,33 @@ function urich_customize_register( $wp_customize ) {
     ) );
 }
 add_action( 'customize_register', 'urich_customize_register' );
+
+// SCHRITT 10: Custom Post Type "Leistungen" registrieren
+function urich_register_leistungen_cpt() {
+    $labels = array(
+        'name'               => 'Leistungen',
+        'singular_name'      => 'Leistung',
+        'add_new'            => 'Neue Leistung',
+        'add_new_item'       => 'Neue Leistung hinzufügen',
+        'edit_item'          => 'Leistung bearbeiten',
+        'new_item'           => 'Neue Leistung',
+        'view_item'          => 'Leistung ansehen',
+        'search_items'       => 'Leistungen suchen',
+        'not_found'          => 'Keine Leistungen gefunden',
+        'all_items'          => 'Alle Leistungen',
+        'menu_name'          => 'Leistungen'
+    );
+
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'has_archive'        => true,
+        'menu_icon'          => 'dashicons-heart', // Ein passendes Icon (Herz/Gesundheit)
+        'supports'           => array('title', 'editor', 'thumbnail'),
+        'rewrite'            => array('slug' => 'leistungen'),
+        'show_in_rest'       => true, // Wichtig für den modernen Gutenberg Editor
+    );
+
+    register_post_type('leistung', $args);
+}
+add_action('init', 'urich_register_leistungen_cpt');
