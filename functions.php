@@ -162,3 +162,71 @@ function urich_register_timeline_cpt() {
     register_post_type('timeline', $args);
 }
 add_action('init', 'urich_register_timeline_cpt');
+
+/**
+ * Meta Box für den Zeitraum (Datum) im CPT "timeline" hinzufügen
+ */
+function urich_timeline_add_meta_box() {
+    add_meta_box(
+        'urich_timeline_date_meta',      // HTML 'id' Attribut
+        'Zeitraum',                      // Titel der Meta Box
+        'urich_timeline_date_callback',  // Callback-Funktion
+        'timeline',                      // CPT (Screen)
+        'normal',                        // Kontext
+        'high'                           // Priorität
+    );
+}
+add_action('add_meta_boxes', 'urich_timeline_add_meta_box');
+
+/**
+ * HTML-Ausgabe für die Zeitraum Meta Box
+ */
+function urich_timeline_date_callback($post) {
+    // Nonce-Feld für die Sicherheitsüberprüfung beim Speichern generieren
+    wp_nonce_field('urich_timeline_save_date_data', 'urich_timeline_date_meta_nonce');
+
+    // Aktuellen Wert aus der Datenbank abrufen, falls vorhanden
+    $value = get_post_meta($post->ID, '_urich_timeline_date', true);
+
+    echo '<label for="urich_timeline_date_field" style="display:block; margin-bottom:5px;">Geben Sie den Zeitraum ein (z.B. "2015 - 2019" oder "seit 2020"):</label>';
+    echo '<input type="text" id="urich_timeline_date_field" name="urich_timeline_date_field" value="' . esc_attr($value) . '" style="width:100%;" />';
+}
+
+/**
+ * Eingegebene Daten der Meta Box beim Speichern des Beitrags sichern
+ */
+function urich_timeline_save_date_data($post_id) {
+    // Überprüfe Nonce
+    if (!isset($_POST['urich_timeline_date_meta_nonce'])) {
+        return;
+    }
+    if (!wp_verify_nonce($_POST['urich_timeline_date_meta_nonce'], 'urich_timeline_save_date_data')) {
+        return;
+    }
+
+    // Ignoriere Autosaves
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+
+    // Benutzerberechtigungen prüfen
+    if (isset($_POST['post_type']) && 'timeline' == $_POST['post_type']) {
+        if (!current_user_can('edit_page', $post_id)) {
+            return;
+        }
+    } else {
+        if (!current_user_can('edit_post', $post_id)) {
+            return;
+        }
+    }
+
+    // Sicherstellen, dass das Feld im POST-Request existiert
+    if (!isset($_POST['urich_timeline_date_field'])) {
+        return;
+    }
+
+    // Daten bereinigen und in der Datenbank speichern (bzw. aktualisieren)
+    $my_data = sanitize_text_field($_POST['urich_timeline_date_field']);
+    update_post_meta($post_id, '_urich_timeline_date', $my_data);
+}
+add_action('save_post', 'urich_timeline_save_date_data');
