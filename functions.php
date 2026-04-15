@@ -137,3 +137,28 @@ function urich_register_leistungen_cpt() {
     register_post_type('leistung', $args);
 }
 add_action('init', 'urich_register_leistungen_cpt');
+
+/**
+ * CPT "Lebenslauf" (intern: timeline) - Für die Über-Mich Seite
+ */
+function urich_register_timeline_cpt() {
+    $labels = array(
+        'name'               => 'Lebenslauf',
+        'singular_name'      => 'Station',
+        'menu_name'          => 'Lebenslauf',
+        'add_new'            => 'Neue Station',
+        'add_new_item'       => 'Neue Station hinzufügen',
+    );
+    $args = array(
+        'labels'             => $labels,
+        'public'             => true,
+        'publicly_queryable' => false,
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'menu_icon'          => 'dashicons-calendar-alt',
+        'supports'           => array('title', 'editor'), 
+        'show_in_rest'       => true,
+    );
+    register_post_type('timeline', $args);
+}
+add_action('init', 'urich_register_timeline_cpt');
