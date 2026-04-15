@@ -14,7 +14,7 @@ add_action('wp_enqueue_scripts', 'urich_theme_scripts');
 
 // Theme Support
 add_theme_support('title-tag');
-add_theme_support('post-thumbnails'); // Wichtig für die Bilder der Leistungen
+add_theme_support('post-thumbnails');
 add_theme_support('custom-logo', array(
     'height'      => 65,
     'width'       => 250,
@@ -60,13 +60,14 @@ function urich_antispam_email_shortcode() {
 }
 add_shortcode('email', 'urich_antispam_email_shortcode');
 
-// Customizer Einstellungen für die Startseite (Hero)
+// Customizer Einstellungen für die Startseite (Hero) - VOLLSTÄNDIG
 function urich_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'urich_hero_section' , array(
         'title'      => __( 'Startseite Hero', 'urich-theme' ),
         'priority'   => 30,
     ) );
 
+    // Hero Titel
     $wp_customize->add_setting( 'urich_hero_title' , array(
         'default'   => 'Bewegung ist <span>Leben</span>.',
         'transport' => 'refresh',
@@ -78,6 +79,7 @@ function urich_customize_register( $wp_customize ) {
         'type'     => 'textarea',
     ) );
 
+    // Hero Untertext
     $wp_customize->add_setting( 'urich_hero_text' , array(
         'default'   => 'Erleben Sie eine Therapie, die nicht nur Symptome behandelt, sondern die Ursachen Ihrer Beschwerden tiefgreifend versteht.',
         'transport' => 'refresh',
@@ -89,6 +91,7 @@ function urich_customize_register( $wp_customize ) {
         'type'     => 'textarea',
     ) );
 
+    // Hero Button Link
     $wp_customize->add_setting( 'urich_hero_btn_link' , array(
         'default'   => 'https://www.appointmed.com/booking/2393840-andreas-urich-osteopathie-und-private-physiotherapie',
         'transport' => 'refresh',
@@ -102,32 +105,35 @@ function urich_customize_register( $wp_customize ) {
 }
 add_action( 'customize_register', 'urich_customize_register' );
 
-// SCHRITT 10: Custom Post Type "Leistungen" registrieren
+/**
+ * CPT "Leistung" - Für das Backend als "Angebote" gelabelt
+ */
 function urich_register_leistungen_cpt() {
     $labels = array(
-        'name'               => 'Leistungen',
-        'singular_name'      => 'Leistung',
-        'add_new'            => 'Neue Leistung',
-        'add_new_item'       => 'Neue Leistung hinzufügen',
-        'edit_item'          => 'Leistung bearbeiten',
-        'new_item'           => 'Neue Leistung',
-        'view_item'          => 'Leistung ansehen',
-        'search_items'       => 'Leistungen suchen',
-        'not_found'          => 'Keine Leistungen gefunden',
-        'all_items'          => 'Alle Leistungen',
-        'menu_name'          => 'Leistungen'
+        'name'               => 'Angebote',
+        'singular_name'      => 'Angebot',
+        'menu_name'          => 'Angebote',
+        'add_new'            => 'Neues Angebot',
+        'add_new_item'       => 'Neues Angebot hinzufügen',
+        'edit_item'          => 'Angebot bearbeiten',
+        'all_items'          => 'Alle Angebote',
     );
 
     $args = array(
         'labels'             => $labels,
         'public'             => true,
-        'has_archive'        => true,
-        'menu_icon'          => 'dashicons-heart', // Ein passendes Icon (Herz/Gesundheit)
+        'publicly_queryable' => false, 
+        'show_ui'            => true,
+        'show_in_menu'       => true,
+        'query_var'          => true,
+        'rewrite'            => false,
+        'capability_type'    => 'post',
+        'has_archive'        => false,
+        'hierarchical'       => false,
+        'menu_icon'          => 'dashicons-heart',
         'supports'           => array('title', 'editor', 'thumbnail'),
-        'rewrite'            => array('slug' => 'leistungen'),
-        'show_in_rest'       => true, // Wichtig für den modernen Gutenberg Editor
+        'show_in_rest'       => true,
     );
-
     register_post_type('leistung', $args);
 }
 add_action('init', 'urich_register_leistungen_cpt');
