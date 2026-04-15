@@ -60,14 +60,13 @@ function urich_antispam_email_shortcode() {
 }
 add_shortcode('email', 'urich_antispam_email_shortcode');
 
-// Customizer Einstellungen für die Startseite (Hero) - VOLLSTÄNDIG
+// Customizer Einstellungen für die Startseite (Hero)
 function urich_customize_register( $wp_customize ) {
     $wp_customize->add_section( 'urich_hero_section' , array(
         'title'      => __( 'Startseite Hero', 'urich-theme' ),
         'priority'   => 30,
     ) );
 
-    // Hero Titel
     $wp_customize->add_setting( 'urich_hero_title' , array(
         'default'   => 'Bewegung ist <span>Leben</span>.',
         'transport' => 'refresh',
@@ -79,7 +78,6 @@ function urich_customize_register( $wp_customize ) {
         'type'     => 'textarea',
     ) );
 
-    // Hero Untertext
     $wp_customize->add_setting( 'urich_hero_text' , array(
         'default'   => 'Erleben Sie eine Therapie, die nicht nur Symptome behandelt, sondern die Ursachen Ihrer Beschwerden tiefgreifend versteht.',
         'transport' => 'refresh',
@@ -91,7 +89,6 @@ function urich_customize_register( $wp_customize ) {
         'type'     => 'textarea',
     ) );
 
-    // Hero Button Link
     $wp_customize->add_setting( 'urich_hero_btn_link' , array(
         'default'   => 'https://www.appointmed.com/booking/2393840-andreas-urich-osteopathie-und-private-physiotherapie',
         'transport' => 'refresh',
@@ -106,127 +103,83 @@ function urich_customize_register( $wp_customize ) {
 add_action( 'customize_register', 'urich_customize_register' );
 
 /**
- * CPT "Leistung" - Für das Backend als "Angebote" gelabelt
+ * CPT "Leistung" (Angebote)
  */
 function urich_register_leistungen_cpt() {
-    $labels = array(
-        'name'               => 'Angebote',
-        'singular_name'      => 'Angebot',
-        'menu_name'          => 'Angebote',
-        'add_new'            => 'Neues Angebot',
-        'add_new_item'       => 'Neues Angebot hinzufügen',
-        'edit_item'          => 'Angebot bearbeiten',
-        'all_items'          => 'Alle Angebote',
-    );
-
+    $labels = array('name' => 'Angebote', 'singular_name' => 'Angebot', 'menu_name' => 'Angebote');
     $args = array(
-        'labels'             => $labels,
-        'public'             => true,
-        'publicly_queryable' => false, 
-        'show_ui'            => true,
-        'show_in_menu'       => true,
-        'query_var'          => true,
-        'rewrite'            => false,
-        'capability_type'    => 'post',
-        'has_archive'        => false,
-        'hierarchical'       => false,
-        'menu_icon'          => 'dashicons-heart',
-        'supports'           => array('title', 'editor', 'thumbnail'),
-        'show_in_rest'       => true,
+        'labels' => $labels, 'public' => true, 'show_in_menu' => true,
+        'menu_icon' => 'dashicons-heart', 'supports' => array('title', 'editor', 'thumbnail'),
+        'show_in_rest' => true,
     );
     register_post_type('leistung', $args);
 }
 add_action('init', 'urich_register_leistungen_cpt');
 
 /**
- * CPT "Lebenslauf" (intern: timeline) - Für die Über-Mich Seite
+ * CPT "Lebenslauf" (timeline)
  */
 function urich_register_timeline_cpt() {
-    $labels = array(
-        'name'               => 'Lebenslauf',
-        'singular_name'      => 'Station',
-        'menu_name'          => 'Lebenslauf',
-        'add_new'            => 'Neue Station',
-        'add_new_item'       => 'Neue Station hinzufügen',
-    );
+    $labels = array('name' => 'Lebenslauf', 'singular_name' => 'Station', 'menu_name' => 'Lebenslauf');
     $args = array(
-        'labels'             => $labels,
-        'public'             => true,
-        'publicly_queryable' => false,
-        'show_ui'            => true,
-        'show_in_menu'       => true,
-        'menu_icon'          => 'dashicons-calendar-alt',
-        'supports'           => array('title', 'editor'), 
-        'show_in_rest'       => true,
+        'labels' => $labels, 'public' => true, 'show_in_menu' => true,
+        'menu_icon' => 'dashicons-calendar-alt', 'supports' => array('title', 'editor'),
+        'show_in_rest' => true,
     );
     register_post_type('timeline', $args);
 }
 add_action('init', 'urich_register_timeline_cpt');
 
 /**
- * Meta Box für den Zeitraum (Datum) im CPT "timeline" hinzufügen
+ * CPT "Preise" (preis_eintrag) für die Kosten-Tabelle
  */
-function urich_timeline_add_meta_box() {
-    add_meta_box(
-        'urich_timeline_date_meta',      // HTML 'id' Attribut
-        'Zeitraum',                      // Titel der Meta Box
-        'urich_timeline_date_callback',  // Callback-Funktion
-        'timeline',                      // CPT (Screen)
-        'normal',                        // Kontext
-        'high'                           // Priorität
+function urich_register_preis_cpt() {
+    $labels = array('name' => 'Preise', 'singular_name' => 'Preiseintrag', 'menu_name' => 'Preise');
+    $args = array(
+        'labels' => $labels, 'public' => true, 'show_in_menu' => true,
+        'menu_icon' => 'dashicons-money-alt', 'supports' => array('title'), 
+        'show_in_rest' => true,
     );
+    register_post_type('preis_eintrag', $args);
 }
-add_action('add_meta_boxes', 'urich_timeline_add_meta_box');
+add_action('init', 'urich_register_preis_cpt');
 
 /**
- * HTML-Ausgabe für die Zeitraum Meta Box
+ * Meta Boxen für Preise (Dauer & Betrag)
  */
-function urich_timeline_date_callback($post) {
-    // Nonce-Feld für die Sicherheitsüberprüfung beim Speichern generieren
-    wp_nonce_field('urich_timeline_save_date_data', 'urich_timeline_date_meta_nonce');
-
-    // Aktuellen Wert aus der Datenbank abrufen, falls vorhanden
-    $value = get_post_meta($post->ID, '_urich_timeline_date', true);
-
-    echo '<label for="urich_timeline_date_field" style="display:block; margin-bottom:5px;">Geben Sie den Zeitraum ein (z.B. "2015 - 2019" oder "seit 2020"):</label>';
-    echo '<input type="text" id="urich_timeline_date_field" name="urich_timeline_date_field" value="' . esc_attr($value) . '" style="width:100%;" />';
+function urich_preis_add_meta_boxes() {
+    add_meta_box('urich_preis_details', 'Preis-Details', 'urich_preis_callback', 'preis_eintrag', 'normal', 'high');
 }
+add_action('add_meta_boxes', 'urich_preis_add_meta_boxes');
+
+function urich_preis_callback($post) {
+    wp_nonce_field('urich_save_preis_meta', 'urich_preis_nonce');
+    $dauer = get_post_meta($post->ID, '_preis_dauer', true);
+    $betrag = get_post_meta($post->ID, '_preis_betrag', true);
+    ?>
+    <p><label>Dauer (z.B. "ca. 60 Min"):</label><br><input type="text" name="preis_dauer" value="<?php echo esc_attr($dauer); ?>" class="widefat"></p>
+    <p><label>Preis (z.B. "90,00 €"):</label><br><input type="text" name="preis_betrag" value="<?php echo esc_attr($betrag); ?>" class="widefat"></p>
+    <?php
+}
+
+function urich_save_preis_meta($post_id) {
+    if (!isset($_POST['urich_preis_nonce']) || !wp_verify_nonce($_POST['urich_preis_nonce'], 'urich_save_preis_meta')) return;
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) return;
+    if (isset($_POST['preis_dauer'])) update_post_meta($post_id, '_preis_dauer', sanitize_text_field($_POST['preis_dauer']));
+    if (isset($_POST['preis_betrag'])) update_post_meta($post_id, '_preis_betrag', sanitize_text_field($_POST['preis_betrag']));
+}
+add_action('save_post', 'urich_save_preis_meta');
 
 /**
- * Eingegebene Daten der Meta Box beim Speichern des Beitrags sichern
+ * CPT "Kostenerstattung" (erstattung) für die Infokarten
  */
-function urich_timeline_save_date_data($post_id) {
-    // Überprüfe Nonce
-    if (!isset($_POST['urich_timeline_date_meta_nonce'])) {
-        return;
-    }
-    if (!wp_verify_nonce($_POST['urich_timeline_date_meta_nonce'], 'urich_timeline_save_date_data')) {
-        return;
-    }
-
-    // Ignoriere Autosaves
-    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
-        return;
-    }
-
-    // Benutzerberechtigungen prüfen
-    if (isset($_POST['post_type']) && 'timeline' == $_POST['post_type']) {
-        if (!current_user_can('edit_page', $post_id)) {
-            return;
-        }
-    } else {
-        if (!current_user_can('edit_post', $post_id)) {
-            return;
-        }
-    }
-
-    // Sicherstellen, dass das Feld im POST-Request existiert
-    if (!isset($_POST['urich_timeline_date_field'])) {
-        return;
-    }
-
-    // Daten bereinigen und in der Datenbank speichern (bzw. aktualisieren)
-    $my_data = sanitize_text_field($_POST['urich_timeline_date_field']);
-    update_post_meta($post_id, '_urich_timeline_date', $my_data);
+function urich_register_erstattung_cpt() {
+    $labels = array('name' => 'Erstattungstexte', 'singular_name' => 'Erstattung Info', 'menu_name' => 'Erstattung');
+    $args = array(
+        'labels' => $labels, 'public' => true, 'show_in_menu' => true,
+        'menu_icon' => 'dashicons-info', 'supports' => array('title', 'editor'),
+        'show_in_rest' => true,
+    );
+    register_post_type('erstattung', $args);
 }
-add_action('save_post', 'urich_timeline_save_date_data');
+add_action('init', 'urich_register_erstattung_cpt');
