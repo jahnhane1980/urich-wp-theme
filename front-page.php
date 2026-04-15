@@ -15,34 +15,43 @@
     <section id="leistungen" class="services">
         <h2>Spezialisierungen</h2>
         <div class="grid">
-            <div class="card">
-                <img src="<?php echo get_template_directory_uri(); ?>/img/parietale-osteopathie.png" alt="Strukturelle Osteopathie" class="card-img" loading="lazy">
-                <div class="card-content">
-                    <h3>Strukturell</h3>
-                    <p>Präzise Arbeit an Wirbelsäule und Gelenken zur Wiederherstellung Ihrer Mobilität.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="<?php echo get_template_directory_uri(); ?>/img/viszerale-osteopathie.png" alt="Organische Osteopathie" class="card-img" loading="lazy">
-                <div class="card-content">
-                    <h3>Organisch</h3>
-                    <p>Viszeral-therapeutische Ansätze zur Unterstützung der inneren Vitalfunktionen.</p>
-                </div>
-            </div>
-            <div class="card">
-                <img src="<?php echo get_template_directory_uri(); ?>/img/kraniosakrale-osteopathie.png" alt="Neurologische Osteopathie" class="card-img" loading="lazy">
-                <div class="card-content">
-                    <h3>Neurologisch</h3>
-                    <p>Sanfte Techniken zur Entspannung des Nervensystems und Regulation von Stress.</p>
-                </div>
-            </div>
+            <?php 
+            // Abfrage der Leistungen
+            $args = array(
+                'post_type'      => 'leistung',
+                'posts_per_page' => 3, // Zeigt die ersten 3 Leistungen an
+                'orderby'        => 'date',
+                'order'          => 'ASC'
+            );
+            $leistungen_query = new WP_Query($args);
+
+            if ($leistungen_query->have_posts()) : 
+                while ($leistungen_query->have_posts()) : $leistungen_query->the_post(); ?>
+                    
+                    <div class="card">
+                        <?php if (has_post_thumbnail()) : ?>
+                            <?php the_post_thumbnail('full', array('class' => 'card-img', 'loading' => 'lazy')); ?>
+                        <?php endif; ?>
+                        <div class="card-content">
+                            <h3><?php the_title(); ?></h3>
+                            <?php the_content(); ?>
+                        </div>
+                    </div>
+
+                <?php endwhile;
+                wp_reset_postdata();
+            else : ?>
+                <p>Noch keine Leistungen angelegt.</p>
+            <?php endif; ?>
         </div>
     </section>
 
     <section id="kontakt" class="contact">
         <div class="contact-container">
             <h2>Persönliche Anfrage</h2>
-            <?php echo do_shortcode('[contact-form-7 id="3bad2bd" title="Kontaktformular 1"]'); ?>
+            <?php 
+            echo do_shortcode('[contact-form-7 id="33" title="Kontaktformular 1"]'); 
+            ?>
         </div>
     </section>
 </main>
