@@ -1,6 +1,10 @@
 /* MASTER STYLESHEET - Andreas Urich Osteopathie */
 
 :root {
+    /* Font Variablen hinzugefügt */
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'IBM Plex Mono', monospace;
+
     --color-primary: #252859;
     --color-secondary: #312f7a;
     --color-accent: #e67e22;
@@ -25,11 +29,15 @@ html {
 }
 
 body { 
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    font-family: var(--font-body);
     line-height: 1.7;
     color: var(--color-text-base);
     background-color: var(--color-bg-main);
     overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
 }
 
 /* NAVIGATION */

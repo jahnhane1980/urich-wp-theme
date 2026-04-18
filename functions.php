@@ -4,6 +4,9 @@
  */
 
 function urich_theme_scripts() {
+    // Google Fonts einbinden (Playfair Display & IBM Plex Mono)
+    wp_enqueue_style('urich-google-fonts', 'https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&display=swap', array(), null);
+
     // Haupt-Stylesheet laden (style.css)
     wp_enqueue_style('urich-main-style', get_stylesheet_uri());
     
