@@ -46,14 +46,6 @@
         </div>
     </section>
 
-    <section id="kontakt" class="contact">
-        <div class="contact-container">
-            <h2>Persönliche Anfrage</h2>
-            <?php 
-            echo do_shortcode('[contact-form-7 id="33" title="Kontaktformular 1"]'); 
-            ?>
-        </div>
-    </section>
-</main>
+    </main>
 
 <?php get_footer(); ?>
