@@ -147,6 +147,7 @@ function urich_register_all_cpts() {
         'labels'            => array('name' => 'Kategorien (z.B. Impressum)', 'singular_name' => 'Kategorie'),
         'show_ui'           => true,
         'show_admin_column' => true,
+        'show_in_rest'      => true, // <--- Diese Zeile schaltet die Kategorien im Block-Editor frei!
     ));
 
     register_post_type('recht_block', array(
