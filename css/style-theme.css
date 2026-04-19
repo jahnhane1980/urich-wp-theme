@@ -363,7 +363,6 @@ nav {
 }
 
 .cv-date { 
-    font-weight: bold; 
     color: var(--color-accent); 
     font-size: 0.9rem; 
     display: block; 
@@ -372,6 +371,7 @@ nav {
 
 .cv-content p {
     margin-bottom: 0;
+    font-size:smaller;
 }
 
 /* FOOTER & WIDGET FIXES */
