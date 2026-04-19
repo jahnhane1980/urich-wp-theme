@@ -5,10 +5,10 @@
     --font-heading: 'Playfair Display', serif;
     --font-body: 'IBM Plex Mono', monospace;
 
-    --color-primary: #252859;
-    --color-secondary: #312f7a;
+    --color-primary: #000A4D; /* alt #252859;*/
+    --color-secondary: #000F6E; /* alt: #312f7a;*/
     --color-accent: #e67e22;
-    --color-bg-main: #e1e2fa; 
+    --color-bg-main: #E6F0FF; /*alt: #e1e2fa*/ 
     --color-bg-surface: #ffffff;
     --color-text-base: #2c2c2c;
     --color-text-inverse: #ffffff;
