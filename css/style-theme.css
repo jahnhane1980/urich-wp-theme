@@ -659,6 +659,12 @@ footer .footer-grid > * + * {
     margin: 0 auto;
 }
 
+.pricing-content h1,
+.pricing-content h2 {
+    color: var(--color-secondary);
+    margin-bottom: 2rem;
+}
+
 .price-table {
     width: 100%;
     border-collapse: collapse;
