@@ -42,7 +42,7 @@ get_header(); ?>
                     while ($info_query->have_posts()) : $info_query->the_post(); ?>
                         
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-content">
                                 <h3><?php the_title(); ?></h3>
                                 <?php the_content(); ?>
                             </div>
