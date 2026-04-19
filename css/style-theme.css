@@ -15,7 +15,7 @@
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: url('../fonts/playfair-display-regular.woff2') format('woff2');
+    src: url('../fonts/playfair-display-v40-latin-regular.woff2') format('woff2');
 }
 
 /* Optional: Du kannst hier auch die "Bold" Versionen einfügen (font-weight: 700), falls du sie runterlädst */
