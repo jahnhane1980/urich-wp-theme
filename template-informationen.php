@@ -14,12 +14,21 @@ get_header(); ?>
             $adresse = get_post_meta(get_the_ID(), '_urich_page_map_adresse', true);
             
             if (!empty($adresse)) : 
-                // Wandelt die Adresse in ein URL-konformes Format für Google Maps um
-                $map_url = 'https://maps.google.com/maps?q=' . urlencode($adresse) . '&t=m&z=15&output=embed&iwloc=near';
+                // Link für Google Maps Routenplaner
+                $google_maps_link = 'https://www.google.com/maps/dir/?api=1&destination=' . urlencode($adresse);
             ?>
                 <div class="map-container">
-                    <iframe src="<?php echo esc_url($map_url); ?>" allowfullscreen="" loading="lazy"></iframe>
+                    <a href="<?php echo esc_url($google_maps_link); ?>" target="_blank" rel="noopener" class="map-link">
+                        <img src="<?php echo get_template_directory_uri(); ?>/img/map-placeholder.jpg" alt="Anfahrt Andreas Urich Osteopathie" class="map-static-img">
+                        <div class="map-button-overlay">
+                            <span class="btn-submit">Route auf Google Maps planen</span>
+                        </div>
+                    </a>
                 </div>
+                <p class="map-hint">
+                    Hinweis: Beim Klicken auf die Karte werden Sie zu Google Maps weitergeleitet. 
+                    Dabei gelten die <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Datenschutzbestimmungen von Google</a>.
+                </p>
             <?php endif; ?>
             
             <div class="arrival-description">
