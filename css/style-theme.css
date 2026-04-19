@@ -57,11 +57,26 @@ nav {
     display: flex; 
     align-items: center; 
     text-decoration: none;
+    gap: 15px; /* Abstand zwischen Bild(ern) und Text */
 }
 
 .logo-img { 
     height: 65px; 
     width: auto; 
+}
+
+.logo-text {
+    font-family: var(--font-heading);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+.logo-secondary {
+    height: 65px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* MOBILE NAV TOGGLE */
@@ -487,6 +502,14 @@ footer .footer-grid > * + * {
         text-align: left; 
         max-width: 600px; 
         margin: 0 auto; 
+    }
+
+    /* Neu: Mobile-Optimierung für Logo/Text im Header */
+    .logo-text {
+        display: none; /* Text auf kleinen Bildschirmen ausblenden, um Platz zu sparen */
+    }
+    .logo-secondary {
+        height: 45px; /* Zweites Logo etwas verkleinern */
     }
 }
 

@@ -11,6 +11,7 @@
 <nav>
     <a href="<?php echo esc_url(home_url('/')); ?>" class="logo-container">
         <?php 
+        // 1. Hauptlogo
         if ( has_custom_logo() ) {
             $custom_logo_id = get_theme_mod( 'custom-logo' );
             $logo_data = wp_get_attachment_image_src( $custom_logo_id , 'full' );
@@ -22,6 +23,18 @@
             }
         } else {
             echo '<img src="' . get_template_directory_uri() . '/img/logo.png" alt="' . get_bloginfo('name') . '" class="logo-img">';
+        }
+
+        // 2. Logo Text (Neu)
+        $urich_logo_text = get_theme_mod('urich_logo_text', 'Osteopathie Andreas Urich');
+        if ( !empty($urich_logo_text) ) {
+            echo '<span class="logo-text">' . esc_html($urich_logo_text) . '</span>';
+        }
+
+        // 3. Zweites Logo (Neu)
+        $urich_second_logo = get_theme_mod('urich_second_logo', get_template_directory_uri() . '/img/VOD_Logo_sw_crop.png');
+        if ( !empty($urich_second_logo) ) {
+            echo '<img src="' . esc_url($urich_second_logo) . '" alt="Zweites Logo" class="logo-secondary">';
         }
         ?>
     </a>

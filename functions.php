@@ -63,8 +63,10 @@ function urich_antispam_email_shortcode() {
 }
 add_shortcode('email', 'urich_antispam_email_shortcode');
 
-// Customizer Einstellungen für die Startseite (Hero)
+// Customizer Einstellungen für die Startseite (Hero) und Header
 function urich_customize_register( $wp_customize ) {
+    
+    // --- Startseite Hero ---
     $wp_customize->add_section( 'urich_hero_section' , array(
         'title'      => __( 'Startseite Hero', 'urich-theme' ),
         'priority'   => 30,
@@ -102,6 +104,33 @@ function urich_customize_register( $wp_customize ) {
         'settings' => 'urich_hero_btn_link',
         'type'     => 'url',
     ) );
+
+    // --- NEU: Header & Logos ---
+    $wp_customize->add_section( 'urich_header_section' , array(
+        'title'      => __( 'Header & Logos', 'urich-theme' ),
+        'priority'   => 31,
+    ) );
+
+    $wp_customize->add_setting( 'urich_logo_text' , array(
+        'default'   => 'Osteopathie Andreas Urich',
+        'transport' => 'refresh',
+    ) );
+    $wp_customize->add_control( 'urich_logo_text_control', array(
+        'label'    => __( 'Text neben dem Logo', 'urich-theme' ),
+        'section'  => 'urich_header_section',
+        'settings' => 'urich_logo_text',
+        'type'     => 'text',
+    ) );
+
+    $wp_customize->add_setting( 'urich_second_logo' , array(
+        'default'   => get_template_directory_uri() . '/img/VOD_Logo_sw_crop.png',
+        'transport' => 'refresh',
+    ) );
+    $wp_customize->add_control( new WP_Customize_Image_Control( $wp_customize, 'urich_second_logo_control', array(
+        'label'    => __( 'Zweites Logo (rechts)', 'urich-theme' ),
+        'section'  => 'urich_header_section',
+        'settings' => 'urich_second_logo',
+    ) ) );
 }
 add_action( 'customize_register', 'urich_customize_register' );
 
