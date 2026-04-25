@@ -505,7 +505,6 @@ footer .footer-grid > * + * {
     color: var(--color-accent);
 }
 
-/* RESPONSIVE */
 @media (max-width: 992px) {
     .hero { flex-direction: column; text-align: center; }
     
@@ -563,7 +562,6 @@ footer .footer-grid > * + * {
         margin: 0 auto; 
     }
 
-    /* Neu: Mobile-Optimierung für Logo/Text im Header */
     .logo-text {
         display: none; 
     }
