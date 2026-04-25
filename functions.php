@@ -190,18 +190,14 @@ function urich_register_all_cpts() {
 add_action('init', 'urich_register_all_cpts');
 
 /**
- * BEDINGTE Meta-Boxen (Werden nur auf den passenden Seiten-Templates angezeigt)
+ * BEDINGTE Meta-Boxen
  */
 function urich_conditional_meta_boxes($post_type, $post) {
     if ($post_type === 'page' && $post) {
         $template = get_post_meta($post->ID, '_wp_page_template', true);
-        
-        // Hinweis-Box NUR auf der Kosten-Seite
         if ($template === 'template-kosten.php') {
             add_meta_box('urich_page_hinweis_meta', 'Wichtiger Hinweis (Block am Seitenende)', 'urich_page_hinweis_callback', 'page', 'normal', 'high');
         }
-        
-        // Maps-Box NUR auf der Informations-Seite
         if ($template === 'template-informationen.php') {
             add_meta_box('urich_page_map_meta', 'Adresse für Google Maps', 'urich_page_map_callback', 'page', 'normal', 'high');
         }
@@ -209,11 +205,10 @@ function urich_conditional_meta_boxes($post_type, $post) {
 }
 add_action('add_meta_boxes', 'urich_conditional_meta_boxes', 10, 2);
 
-// Callback & Save: Hinweis-Box
 function urich_page_hinweis_callback($post) {
     wp_nonce_field('urich_save_page_hinweis', 'urich_page_hinweis_nonce');
     $hinweis = get_post_meta($post->ID, '_urich_page_hinweis', true);
-    echo '<label style="display:block; margin-bottom:5px;">Text für den Wichtigen Hinweis (falls gewünscht):</label>';
+    echo '<label style="display:block; margin-bottom:5px;">Text für den Wichtigen Hinweis:</label>';
     echo '<textarea name="urich_page_hinweis_field" style="width:100%; height:100px;">' . esc_textarea($hinweis) . '</textarea>';
 }
 function urich_save_page_hinweis($post_id) {
@@ -223,11 +218,10 @@ function urich_save_page_hinweis($post_id) {
 }
 add_action('save_post', 'urich_save_page_hinweis');
 
-// Callback & Save: Maps-Box
 function urich_page_map_callback($post) {
     wp_nonce_field('urich_save_page_map', 'urich_page_map_nonce');
     $adresse = get_post_meta($post->ID, '_urich_page_map_adresse', true);
-    echo '<label style="display:block; margin-bottom:5px;">Geben Sie die vollständige Adresse ein:</label>';
+    echo '<label style="display:block; margin-bottom:5px;">Vollständige Adresse:</label>';
     echo '<input type="text" name="urich_page_map_adresse" value="' . esc_attr($adresse) . '" style="width:100%;">';
 }
 function urich_save_page_map($post_id) {
@@ -236,7 +230,6 @@ function urich_save_page_map($post_id) {
     if (isset($_POST['urich_page_map_adresse'])) update_post_meta($post_id, '_urich_page_map_adresse', sanitize_text_field($_POST['urich_page_map_adresse']));
 }
 add_action('save_post', 'urich_save_page_map');
-
 
 /**
  * Meta-Boxen für Lebenslauf & Preise
@@ -247,7 +240,6 @@ function urich_standard_meta_boxes() {
 }
 add_action('add_meta_boxes', 'urich_standard_meta_boxes');
 
-// Callback & Save: Lebenslauf
 function urich_timeline_date_callback($post) {
     wp_nonce_field('urich_timeline_save_date_data', 'urich_timeline_date_meta_nonce');
     $value = get_post_meta($post->ID, '_urich_timeline_date', true);
@@ -260,7 +252,6 @@ function urich_timeline_save_date_data($post_id) {
 }
 add_action('save_post', 'urich_timeline_save_date_data');
 
-// Callback & Save: Preise
 function urich_preis_callback($post) {
     wp_nonce_field('urich_save_preis_meta', 'urich_preis_nonce');
     $dauer = get_post_meta($post->ID, '_preis_dauer', true);
@@ -277,11 +268,11 @@ add_action('save_post', 'urich_save_preis_meta');
 
 
 /* ==========================================================================
-   DRAG AND DROP FÜR RECHTSTEXTE (menu_order Komfort)
+   RECHTSTEXTE: SORTIERUNG, FILTERUNG & DRAG AND DROP (V3)
    ========================================================================== */
 
 /**
- * 1. Spalte "Reihenfolge" in der Liste hinzufügen
+ * 1. Spalten definieren (Kategorie-Spalte sortierbar machen)
  */
 function urich_recht_block_columns($columns) {
     $columns['menu_order'] = 'Reihenfolge';
@@ -289,76 +280,107 @@ function urich_recht_block_columns($columns) {
 }
 add_filter('manage_recht_block_posts_columns', 'urich_recht_block_columns');
 
-/**
- * 2. Inhalt der Spalte ausgeben
- */
 function urich_recht_block_column_content($column, $post_id) {
     if ($column === 'menu_order') {
         $order = get_post_field('menu_order', $post_id);
         echo '<strong>' . $order . '</strong>';
-        echo '<span class="drag-handle dashicons dashicons-menu" style="cursor:move; margin-left:10px; color:#ccc;"></span>';
+        echo '<span class="drag-handle dashicons dashicons-menu" style="cursor:move; margin-left:10px; color:#999; font-size:20px;"></span>';
     }
 }
 add_action('manage_recht_block_posts_custom_column', 'urich_recht_block_column_content', 10, 2);
 
-/**
- * 3. Spalte sortierbar machen (per Klick auf Titel)
- */
 function urich_recht_block_sortable_columns($columns) {
     $columns['menu_order'] = 'menu_order';
+    $columns['taxonomy-recht_kategorie'] = 'taxonomy-recht_kategorie'; // Jetzt nach Kategorie sortierbar!
     return $columns;
 }
 add_filter('manage_edit-recht_block_sortable_columns', 'urich_recht_block_sortable_columns');
 
 /**
- * 4. Drag & Drop Scripte nur im Admin-Bereich von 'recht_block' laden
+ * 2. Kategorie-Filter (Dropdown) über der Liste hinzufügen
+ */
+function urich_recht_block_filter_list() {
+    global $typenow;
+    if ($typenow == 'recht_block') {
+        $taxonomy = 'recht_kategorie';
+        wp_dropdown_categories(array(
+            'show_option_all' => 'Alle Kategorien anzeigen',
+            'taxonomy'        => $taxonomy,
+            'name'            => $taxonomy,
+            'orderby'         => 'name',
+            'selected'        => (isset($_GET[$taxonomy])) ? $_GET[$taxonomy] : '',
+            'hierarchical'    => true,
+            'depth'           => 3,
+            'show_count'      => true,
+            'hide_empty'      => false,
+        ));
+    }
+}
+add_action('restrict_manage_posts', 'urich_recht_block_filter_list');
+
+/**
+ * 3. Drag & Drop Scripte (Vollständiger Fix für Sichtbarkeit & Funktionalität)
  */
 function urich_recht_block_order_scripts($hook) {
     global $post_type;
     if ($hook == 'edit.php' && $post_type == 'recht_block') {
         wp_enqueue_script('jquery-ui-sortable');
+        
         ?>
         <script type="text/javascript">
             jQuery(document).ready(function($) {
-                var is_sorted = false;
-                var $table = $('table.wp-list-table tbody');
+                var $list = $('#the-list');
 
-                $table.sortable({
-                    items: 'tr',
-                    cursor: 'move',
-                    handle: '.drag-handle',
-                    placeholder: 'ui-state-highlight',
-                    axis: 'y',
-                    update: function(event, ui) {
-                        var order = $table.sortable('serialize');
-                        
-                        // IDs der Zeilen extrahieren
-                        var post_ids = [];
-                        $table.find('tr').each(function(){
-                            var id = $(this).attr('id').replace('post-', '');
-                            post_ids.push(id);
-                        });
+                if($list.length > 0) {
+                    $list.sortable({
+                        items: 'tr',
+                        cursor: 'move',
+                        handle: '.drag-handle', // Greift nur am Icon
+                        placeholder: 'ui-state-highlight',
+                        axis: 'y',
+                        helper: function(e, ui) {
+                            ui.children().each(function() {
+                                $(this).width($(this).width());
+                            });
+                            return ui;
+                        },
+                        start: function(e, ui) {
+                            ui.placeholder.height(ui.item.height());
+                        },
+                        update: function(event, ui) {
+                            var post_ids = [];
+                            $list.find('tr').each(function(){
+                                var id_attr = $(this).attr('id');
+                                if(id_attr) {
+                                    post_ids.push(id_attr.replace('post-', ''));
+                                }
+                            });
 
-                        // Ajax Call zum Speichern
-                        $.ajax({
-                            url: ajaxurl,
-                            type: 'POST',
-                            data: {
-                                action: 'urich_update_recht_order',
-                                post_ids: post_ids
-                            },
-                            success: function(response) {
-                                // Erfolgsmeldung oder kurzes Highlight
-                                ui.item.children('td').effect('highlight', { color: '#f38400' }, 1000);
-                            }
-                        });
-                    }
-                });
+                            $.ajax({
+                                url: ajaxurl,
+                                type: 'POST',
+                                data: {
+                                    action: 'urich_update_recht_order',
+                                    post_ids: post_ids
+                                },
+                                success: function(response) {
+                                    ui.item.children('td').css('background-color', '#fff9e6').animate({
+                                        backgroundColor: '#ffffff'
+                                    }, 800);
+                                }
+                            });
+                        }
+                    });
+                }
 
-                // Styling für den Platzhalter während des Ziehens
+                // CSS für den Griff und den Platzhalter
                 $("<style>")
                     .prop("type", "text/css")
-                    .html(".ui-state-highlight { background: #e6f0ff; border: 2px dashed #f38400; height: 50px !important; visibility: visible !important; }")
+                    .html(
+                        ".drag-handle:hover { color: #f38400 !important; transform: scale(1.2); transition: 0.2s; }" +
+                        ".ui-state-highlight { background: #e6f0ff !important; border: 2px dashed #f38400 !important; visibility: visible !important; display: table-row !important; }" +
+                        ".wp-list-table .ui-sortable-helper { background: #fff; box-shadow: 0 5px 20px rgba(0,0,0,0.1); display: table !important; }"
+                    )
                     .appendTo("head");
             });
         </script>
@@ -368,24 +390,18 @@ function urich_recht_block_order_scripts($hook) {
 add_action('admin_enqueue_scripts', 'urich_recht_block_order_scripts');
 
 /**
- * 5. Ajax Handler: Neue Reihenfolge speichern
+ * 4. Ajax Handler zum Speichern
  */
 function urich_save_recht_block_order() {
     if (!isset($_POST['post_ids']) || !current_user_can('edit_posts')) {
         wp_send_json_error();
     }
-
     $post_ids = $_POST['post_ids'];
     $menu_order = 0;
-
     foreach ($post_ids as $id) {
-        wp_update_post(array(
-            'ID'         => intval($id),
-            'menu_order' => $menu_order
-        ));
+        wp_update_post(array('ID' => intval($id), 'menu_order' => $menu_order));
         $menu_order++;
     }
-
-    wp_send_json_success('Sortierung gespeichert');
+    wp_send_json_success();
 }
 add_action('wp_ajax_urich_update_recht_order', 'urich_save_recht_block_order');
