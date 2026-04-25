@@ -203,7 +203,7 @@ nav {
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
     gap: 2.5rem; 
 }
-
+/** OLD 
 .card {
     background: var(--color-bg-surface);
     padding: 0 0 2rem 0; 
@@ -236,6 +236,45 @@ nav {
     text-transform: uppercase; 
     margin-bottom: 1.2rem; 
     font-size: 1.1rem; 
+}
+*/
+
+/* BASIS CARD FIX NEU*/
+.card {
+    background: var(--color-bg-surface);
+    padding: 0; /* Vorher: 0 0 2rem 0 - wir setzen es auf 0 zurück */
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    transition: var(--transition-standard);
+    border-bottom: 3px solid transparent;
+    text-align: left;
+    overflow: hidden;
+}
+
+/* BILD OHNE EXTRA MARGIN */
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    margin-bottom: 0; /* Wir entfernen den Margin, da das Padding nun vom Content kommt */
+}
+
+/* KONSISTENTER INNENABSTAND */
+.card-content {
+    padding: 2.5rem 2rem; /* Oben & Unten 2.5rem, Links & Rechts 2rem */
+}
+
+.card h3 { 
+    color: var(--color-secondary); 
+    text-transform: uppercase; 
+    margin-bottom: 1.2rem; 
+    font-size: 1.1rem; 
+    /* Ein kleiner Trick: Falls ein Bild da ist, reduzieren wir das obere Padding etwas */
+}
+
+/* Optionaler Feinschliff für Karten MIT Bild */
+.card-img + .card-content {
+    padding-top: 1.5rem; 
 }
 
 /* KONTAKTFORMULAR */
