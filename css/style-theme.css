@@ -613,6 +613,14 @@ footer .footer-grid > * + * {
     transform: scale(1.05); /* Schöner Zoom-Effekt beim Drüberfahren */
 }
 
+/* Spezialfall: Map-Button Hover-Effekt */
+.map-link .btn-submit:hover {
+    background-color: #ffffff;
+    border-color: #ffffff;
+    color: var(--color-secondary); /* Nutzt das dunkle Blau für den Text */
+    opacity: 1; /* Sicherstellen, dass nichts durchscheint */
+}
+
 /* Hinweistext unter der Map */
 .map-hint {
     margin-top: 1.5rem;
