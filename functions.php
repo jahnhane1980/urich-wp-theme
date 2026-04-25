@@ -178,13 +178,12 @@ function urich_register_all_cpts() {
         'labels'            => array('name' => 'Kategorien (z.B. Impressum)', 'singular_name' => 'Kategorie'),
         'show_ui'           => true,
         'show_admin_column' => true,
-        'show_in_rest'      => true, // <--- Diese Zeile schaltet die Kategorien im Block-Editor frei!
+        'show_in_rest'      => true, 
     ));
 
     register_post_type('recht_block', array(
         'labels' => array('name' => 'Rechtstexte', 'singular_name' => 'Rechts-Block', 'menu_name' => 'Rechtstexte'),
         'public' => false, 'show_ui' => true, 'show_in_menu' => true, 'menu_icon' => 'dashicons-portfolio', 
-        // page-attributes erlaubt die Sortierung der Blöcke via "Reihenfolge"
         'supports' => array('title', 'editor', 'page-attributes'), 'show_in_rest' => true,
     ));
 }
@@ -275,3 +274,118 @@ function urich_save_preis_meta($post_id) {
     if (isset($_POST['preis_betrag'])) update_post_meta($post_id, '_preis_betrag', sanitize_text_field($_POST['preis_betrag']));
 }
 add_action('save_post', 'urich_save_preis_meta');
+
+
+/* ==========================================================================
+   DRAG AND DROP FÜR RECHTSTEXTE (menu_order Komfort)
+   ========================================================================== */
+
+/**
+ * 1. Spalte "Reihenfolge" in der Liste hinzufügen
+ */
+function urich_recht_block_columns($columns) {
+    $columns['menu_order'] = 'Reihenfolge';
+    return $columns;
+}
+add_filter('manage_recht_block_posts_columns', 'urich_recht_block_columns');
+
+/**
+ * 2. Inhalt der Spalte ausgeben
+ */
+function urich_recht_block_column_content($column, $post_id) {
+    if ($column === 'menu_order') {
+        $order = get_post_field('menu_order', $post_id);
+        echo '<strong>' . $order . '</strong>';
+        echo '<span class="drag-handle dashicons dashicons-menu" style="cursor:move; margin-left:10px; color:#ccc;"></span>';
+    }
+}
+add_action('manage_recht_block_posts_custom_column', 'urich_recht_block_column_content', 10, 2);
+
+/**
+ * 3. Spalte sortierbar machen (per Klick auf Titel)
+ */
+function urich_recht_block_sortable_columns($columns) {
+    $columns['menu_order'] = 'menu_order';
+    return $columns;
+}
+add_filter('manage_edit-recht_block_sortable_columns', 'urich_recht_block_sortable_columns');
+
+/**
+ * 4. Drag & Drop Scripte nur im Admin-Bereich von 'recht_block' laden
+ */
+function urich_recht_block_order_scripts($hook) {
+    global $post_type;
+    if ($hook == 'edit.php' && $post_type == 'recht_block') {
+        wp_enqueue_script('jquery-ui-sortable');
+        ?>
+        <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                var is_sorted = false;
+                var $table = $('table.wp-list-table tbody');
+
+                $table.sortable({
+                    items: 'tr',
+                    cursor: 'move',
+                    handle: '.drag-handle',
+                    placeholder: 'ui-state-highlight',
+                    axis: 'y',
+                    update: function(event, ui) {
+                        var order = $table.sortable('serialize');
+                        
+                        // IDs der Zeilen extrahieren
+                        var post_ids = [];
+                        $table.find('tr').each(function(){
+                            var id = $(this).attr('id').replace('post-', '');
+                            post_ids.push(id);
+                        });
+
+                        // Ajax Call zum Speichern
+                        $.ajax({
+                            url: ajaxurl,
+                            type: 'POST',
+                            data: {
+                                action: 'urich_update_recht_order',
+                                post_ids: post_ids
+                            },
+                            success: function(response) {
+                                // Erfolgsmeldung oder kurzes Highlight
+                                ui.item.children('td').effect('highlight', { color: '#f38400' }, 1000);
+                            }
+                        });
+                    }
+                });
+
+                // Styling für den Platzhalter während des Ziehens
+                $("<style>")
+                    .prop("type", "text/css")
+                    .html(".ui-state-highlight { background: #e6f0ff; border: 2px dashed #f38400; height: 50px !important; visibility: visible !important; }")
+                    .appendTo("head");
+            });
+        </script>
+        <?php
+    }
+}
+add_action('admin_enqueue_scripts', 'urich_recht_block_order_scripts');
+
+/**
+ * 5. Ajax Handler: Neue Reihenfolge speichern
+ */
+function urich_save_recht_block_order() {
+    if (!isset($_POST['post_ids']) || !current_user_can('edit_posts')) {
+        wp_send_json_error();
+    }
+
+    $post_ids = $_POST['post_ids'];
+    $menu_order = 0;
+
+    foreach ($post_ids as $id) {
+        wp_update_post(array(
+            'ID'         => intval($id),
+            'menu_order' => $menu_order
+        ));
+        $menu_order++;
+    }
+
+    wp_send_json_success('Sortierung gespeichert');
+}
+add_action('wp_ajax_urich_update_recht_order', 'urich_save_recht_block_order');
