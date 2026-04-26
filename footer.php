@@ -13,8 +13,8 @@
             <?php dynamic_sidebar( 'footer-1' ); ?>
         <?php else : ?>
             <div>
-                <h4 class="footer-title">Andreas Urich</h4>
-                <p>Praxis für Osteopathie<br>Industriestraße 9<br>97241 Bergtheim</p>
+                <h4 class="footer-title">Footer Links</h4>
+                <p>Bitte fügen Sie unter <em>Design &gt; Widgets</em> ein Widget in den Bereich <strong>"Footer Links"</strong> ein.</p>
             </div>
         <?php endif; ?>
 
@@ -22,8 +22,8 @@
             <?php dynamic_sidebar( 'footer-2' ); ?>
         <?php else : ?>
             <div>
-                <h4 class="footer-title">Kontakt</h4>
-                <p>E-Mail: <?php echo antispambot('info@osteopathie-urich.de'); ?><br>Tel: 0123 / 456 789</p>
+                <h4 class="footer-title">Footer Rechts</h4>
+                <p>Bitte fügen Sie unter <em>Design &gt; Widgets</em> ein Widget in den Bereich <strong>"Footer Rechts"</strong> ein.</p>
             </div>
         <?php endif; ?>
     </div>

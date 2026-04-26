@@ -54,10 +54,17 @@ function urich_widgets_init() {
 }
 add_action( 'widgets_init', 'urich_widgets_init' );
 
-// Shortcode für verschlüsselte E-Mail
-function urich_antispam_email_shortcode() {
-    $email = 'info@osteopathie-urich.de'; 
+// Shortcode für verschlüsselte E-Mail (Dynamisch)
+function urich_antispam_email_shortcode($atts) {
+    // Standard-Attribute festlegen
+    $a = shortcode_atts(array(
+        'adresse' => 'info@osteopathie-urich.de',
+    ), $atts);
+
+    // E-Mail validieren und verschlüsseln
+    $email = sanitize_email($a['adresse']);
     $encoded = antispambot($email);
+    
     return '<a href="mailto:' . $encoded . '">' . $encoded . '</a>';
 }
 add_shortcode('email', 'urich_antispam_email_shortcode');
