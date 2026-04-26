@@ -54,20 +54,22 @@ function urich_widgets_init() {
 }
 add_action( 'widgets_init', 'urich_widgets_init' );
 
-// Shortcode für verschlüsselte E-Mail (Dynamisch)
+// Shortcode für verschlüsselte E-Mail (Dynamische Version mit CSS-Klasse)
 function urich_antispam_email_shortcode($atts) {
-    // Standard-Attribute festlegen
     $a = shortcode_atts(array(
         'adresse' => 'info@osteopathie-urich.de',
     ), $atts);
 
-    // E-Mail validieren und verschlüsseln
     $email = sanitize_email($a['adresse']);
     $encoded = antispambot($email);
     
-    return '<a href="mailto:' . $encoded . '">' . $encoded . '</a>';
+    // Klasse "footer-mail-link" hinzugefügt für gezieltes Styling
+    return '<a href="mailto:' . $encoded . '" class="footer-mail-link">' . $encoded . '</a>';
 }
 add_shortcode('email', 'urich_antispam_email_shortcode');
+
+// Erlaubt Shortcodes in Text-Widgets
+add_filter('widget_text', 'do_shortcode');
 
 // Customizer Einstellungen für die Startseite (Hero) und Header
 function urich_customize_register( $wp_customize ) {
