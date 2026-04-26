@@ -24,7 +24,10 @@
         } else {
             echo '<img src="' . get_template_directory_uri() . '/img/logo.png" alt="' . get_bloginfo('name') . '" class="logo-img">';
         }
-
+        ?>
+    </a>
+    <a href="https://www.osteopathie.de/" target="_blank" class="logo-container">
+        <?php 
         // 2. Logo Text (Neu)
         $urich_logo_text = get_theme_mod('urich_logo_text', 'Osteopathie Andreas Urich');
         if ( !empty($urich_logo_text) ) {
